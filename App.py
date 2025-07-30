@@ -4,11 +4,10 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-st. set_page_config(layout="wide")
+st.set_page_config(layout = "wide")
 session = requests.Session()
-retries = Retry(total=3, backoff_factor=0.5,
-                status_forcelist=[429, 500, 502, 503, 504])
-session.mount("https://", HTTPAdapter(max_retries=retries))
+retries = Retry(total = 3, backoff_factor = 0.5, status_forcelist=[429, 500, 502, 503, 504])
+session.mount("https://", HTTPAdapter(max_retries = retries))
 
 API_KEY = "cda15a923022c46bea490dedfd5db290"
 
@@ -33,7 +32,7 @@ def fetch_poster(movie_id: int) -> str:
 def recommend(title: str, topn: int = 5):
     idx = movies_df[movies_df["title"] == title].index[0]
     sim_scores = list(enumerate(sim_matrix[idx]))
-    sim_scores.sort(key=lambda x: x[1], reverse=True)
+    sim_scores.sort(key = lambda x: x[1], reverse = True)
     names, posters = [], []
     for movie_idx, score in sim_scores[1 : topn + 1]:
         m_id = movies_df.iloc[movie_idx].movie_id
@@ -50,7 +49,7 @@ selected = st.selectbox(
     "Type or select a movie from the dropdown", movies_df["title"].values
 )
 
-if st.button("Show Recommendation"):
+if st.button("Show Top 5 Recommendations"):
     with st.spinner("Scouting for your next binge… 🍿"):
         names, posters = recommend(selected)
         cols = st.columns(len(names))
